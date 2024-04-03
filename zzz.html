@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .title-bar {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            box-shadow: 0 5px 5px -5px rgba(0, 0, 0, 0.5);
+            position: fixed; /* Fixing the title bar */
+            width: 100%; /* Making it span the entire width */
+            top: 0; /* Positioning it at the top */
+            display: flex;
+        }
+
+        .title-bar img {
+            margin-right: 10px;
+            max-height: 30px;
+        }
+
+        .title-bar h2 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 160px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .admin-options button,
+        .employee-options button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .admin-options button:hover,
+        .employee-options button:hover {
+            background-color: #45a049;
+        }
+
+        pre{
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Title bar -->
+    <div class="title-bar" id="adminTitleBar">
+        <img src="arrr.jpg" alt="Logo"> <!-- Add your image here -->
+        <h2>Master Textile Mills</h2>
+    </div>
+
+    <div class="container" id="loginForm">
+        <h2>Company Management Solution</h2>
+        <pre>Note: Please enter your CNIC (i.e 8230136298285) or Passport # as your User
+ID. Kindly use Google Chrome to singup</pre>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <button onclick="authenticate()">Login</button>
+        <a href="#">Reset Password</a>
+    </div>
+
+    <div class="container" id="adminPanel" style="display: none;">
+        <div class="bar" id="adminOptionsTitleBar">
+            <h2>Admin Panel</h2>
+        </div>
+        <div class="admin-options">
+            <button onclick="insertEmployee()">Insert Employee</button>
+            <button onclick="displayEmployee()">Display Employee</button>
+            <button onclick="searchEmployee()">Search Employee Data</button>
+            <button onclick="modifyEmployee()">Modify Employee Data</button>
+            <button onclick="deleteEmployee()">Delete Employee Data</button>
+            <button onclick="groupEmployees()">Group of Employees</button>
+            <button onclick="groupRecord()">Group Record</button>
+            <button onclick="showGroup()">Show Group</button>
+            <button onclick="checkAttendance()">Check Attendance</button>
+            <button onclick="searchAttendance()">Search Attendance</button>
+        </div>
+    </div>
+
+    <div class="container" id="insertEmployeeForm" style="display: none;">
+        <h2>Insert Employee</h2>
+        <form id="employeeForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName"><br>
+            <label for="fatherName">Father's Name:</label>
+            <input type="text" id="fatherName" name="fatherName"><br>
+            <label for="dob">Date of Birth:</label>
+            <input type="text" id="dob" name="dob"><br>
+            <label for="phone">Phone Number:</label>
+            <input type="text" id="phone" name="phone"><br>
+            <label for="religion">Religion:</label>
+            <input type="text" id="religion" name="religion"><br>
+            <label for="job">Job:</label>
+            <select id="job" name="job">
+                <option value="job1">Job 1</option>
+                <option value="job2">Job 2</option>
+                <option value="job3">Job 3</option>
+                <!-- Add more options as needed -->
+            </select><br>
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address"><br>
+            <label for="experience">Work Experience:</label>
+            <input type="text" id="experience" name="experience"><br>
+            <label for="groupID">Group ID:</label>
+            <input type="text" id="groupID" name="groupID"><br>
+            <label for="cv">CV Document:</label>
+            <input type="file" id="cv" name="cv"><br>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript code
+        function authenticate() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            if (username === "admin" && password === "arslan") {
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("adminPanel").style.display = "block";
+                document.getElementById("employeePanel").style.display = "none";
+            } else if (username === "employee" && password === "arslan") {
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("adminPanel").style.display = "none";
+                document.getElementById("employeePanel").style.display = "block";
+            } else
+            {
+                alert("Invalid username or password!");
+            }
+        }
+
+        // Admin panel functions
+        function insertEmployee() {
+    document.getElementById("insertEmployeeForm").style.display = "block";
+}
+
+        function displayEmployee() {
+            alert("Displaying employee...");
+        }
+
+        function searchEmployee() {
+            alert("Searching employee data...");
+        }
+
+        function modifyEmployee() {
+            alert("Modifying employee data...");
+        }
+
+        function deleteEmployee() {
+            alert("Deleting employee data...");
+        }
+
+        function groupEmployees() {
+            alert("Grouping employees...");
+        }
+
+        function groupRecord() {
+            alert("Group record...");
+        }
+
+        function showGroup() {
+            alert("Showing group...");
+        }
+
+        function checkAttendance() {
+            alert("Checking attendance...");
+        }
+
+        function searchAttendance() {
+            alert("Searching attendance...");
+        }
+
+        // Employee panel functions
+        function modifyBio() {
+            alert("Modifying bio...");
+        }
+
+        function markAttendance() {
+            alert("Marking attendance...");
+        }
+    </script>
+
+</body>
+
+</html>
